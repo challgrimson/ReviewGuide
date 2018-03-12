@@ -1,3 +1,3 @@
 # ReviewTracker
 
-Whatup homies
+Whatup homies, hair is looking good today!
