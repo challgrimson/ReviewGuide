@@ -48,7 +48,7 @@ public class Product implements Comparable<Product>{
 	   * @return returns the year the review was posted
 	   */
 	public int getYear(String data) {
-		String[] s1 = data.split(",");
+		String[] s1 = data.split(", ");
 		return Integer.parseInt(s1[1]);
 	}
 	

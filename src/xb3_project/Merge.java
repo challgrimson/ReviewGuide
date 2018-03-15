@@ -37,21 +37,21 @@ public class Merge {
 
 		br.close();
 		
-		System.out.println("Unsorted: \n");
+		System.out.println("UNSORTED: \n");
 		//System.out.println(Arrays.toString(arr));
 		for(int j = 0; j<arr.length; j++) {
 			System.out.println("Review " + (j+1) + ":");
 			System.out.printf("ASIN: %s, Date: %s, Rating: %.1f\n", arr[j].getAsin(), arr[j].getMonth(arr[j].getReviewTime()), arr[j].getOverall());
 		}
 		
-		/*
+		
 		Merge.sortMerge(arr, 3);
-		System.out.println("Sorted: \n");
+		System.out.println("\nSORTED: \n");
 		for(int j = 0; j<arr.length; j++) {
 			System.out.println("Review " + (j+1) + ":");
 			System.out.printf("ASIN: %s, Time: %s, Rating: %.1f\n", arr[j].getAsin(), arr[j].getReviewTime(), arr[j].getOverall());
 		}
-		*/
+		
 		
 	}
 	
