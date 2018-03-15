@@ -7,9 +7,9 @@ public class Insert {
 	
 	public static void create(Product[] x) {
 		for(int i = 0; i<x.length; i++)
-			ht.put(x[i].getProductID(), x[i]);
+			ht.put(x[i].getAsin(), x[i]);
 	}
 	public static Product getRatings(Product x) {
-		return (Product) ht.get(x.getProductID());
+		return (Product) ht.get(x.getAsin());
 	}
 }

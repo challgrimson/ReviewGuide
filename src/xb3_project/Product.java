@@ -1,9 +1,14 @@
 package xb3_project;
 
+import java.util.List;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
 * The Product abstract data type to store the product information
-* It stores the product ID, date and rating of the product
-* The date fields (month, day, year) are stored as integers
+* It stores the product ID, reviewTime and overall of the product
+* The reviewTime fields (month, day, year) are stored as integers
 *
 * @author  Team 7
 * @version 1.0
@@ -12,28 +17,34 @@ package xb3_project;
 
 public class Product implements Comparable<Product>{
 	
-	// The variables to store the productID, date and rating of the product
-	private String productID;
-	private String date;
-	private double rating;
+	// The variables to store the asin, reviewTime and overall of the product
+	@SerializedName("asin")
+	@Expose
+	private String asin;
+	@SerializedName("overall")
+	@Expose
+	private Double overall;
+	@SerializedName("reviewTime")
+	@Expose
+	private String reviewTime;
 	
 	/**
 	   * This method is the constructor. This is
 	   * used to initialize the fields in each job
-	   * @param productID This is the ID of the product
-	   * @param date  This is the date the review was made
-	   * @param rating This is rating for the product
+	   * @param asin This is the ID of the product
+	   * @param reviewTime  This is the reviewTime the review was made
+	   * @param overall This is overall for the product
 	   */
-	public Product(String productID, String date, double rating) {
-		this.productID = productID;
-		this.rating = rating;
-		this.date = date;
+	public Product(String asin, String reviewTime, double overall) {
+		this.asin = asin;
+		this.overall = overall;
+		this.reviewTime = reviewTime;
 	}
 	
 	/**
 	   * This method is a getter. This is
 	   * used to get the year as an integer
-	   * @param data this is the date of the review
+	   * @param data this is the reviewTime of the review
 	   * @return returns the year the review was posted
 	   */
 	public int getYear(String data) {
@@ -44,7 +55,7 @@ public class Product implements Comparable<Product>{
 	/**
 	   * This method is a getter. This is
 	   * used to get the month as an integer
-	   * @param data this is the date of the review
+	   * @param data this is the reviewTime of the review
 	   * @return returns the month the review was posted
 	   */
 	public int getMonth(String data) {
@@ -56,7 +67,7 @@ public class Product implements Comparable<Product>{
 	/**
 	   * This method is a getter. This is
 	   * used to get the day as an integer
-	   * @param data this is the date of the review
+	   * @param data this is the reviewTime of the review
 	   * @return returns the day the review was posted
 	   */
 	public int getDay(String data) {
@@ -66,32 +77,32 @@ public class Product implements Comparable<Product>{
 	}
 	
 	/**
-	   * This method gives the review date.
-	   * @return date This returns the date the review was generated
+	   * This method gives the review reviewTime.
+	   * @return reviewTime This returns the reviewTime the review was generated
 	   */
-	public String getDate() {
-		return this.date;
+	public String getReviewTime() {
+		return this.reviewTime;
 	}
 	
 	/**
-	   * This method gives the productID.
-	   * @return productID This returns the product ID for the product
+	   * This method gives the asin.
+	   * @return asin This returns the product ID for the product
 	   */
-	public String getProductID() {
-		return this.productID;
+	public String getAsin() {
+		return this.asin;
 	}
 	
 	/**
-	   * This method gives the review rating.
-	   * @return getRating This returns the rating for the review
+	   * This method gives the review overall.
+	   * @return getOverall This returns the overall for the review
 	   */
-	public double getRating() {
-		return this.rating;
+	public double getOverall() {
+		return this.overall;
 	}
 
 	/**
-	   * This method compares the products based on the review dates first comparing the years.
-	   * If the date of the argument review is greater than
+	   * This method compares the products based on the review reviewTimes first comparing the years.
+	   * If the reviewTime of the argument review is greater than
 	   * the first one it returns -1, if it's less it returns 1.
 	   * If the year's are equal it compares them based on month.
 	   * If the months are equal it compares them based on day.
@@ -100,17 +111,17 @@ public class Product implements Comparable<Product>{
 	   */
 	@Override
 	public int compareTo(Product o) {
-		if (this.getYear(this.getDate()) < o.getYear(o.getDate())) return -1;
-		if (this.getYear(this.getDate()) > o.getYear(o.getDate())) return 1;
-		if (this.getYear(this.getDate()) == o.getYear(this.getDate())) {
-			if (this.getMonth(this.getDate()) < o.getMonth(o.getDate())) {
+		if (this.getYear(this.getReviewTime()) < o.getYear(o.getReviewTime())) return -1;
+		if (this.getYear(this.getReviewTime()) > o.getYear(o.getReviewTime())) return 1;
+		if (this.getYear(this.getReviewTime()) == o.getYear(this.getReviewTime())) {
+			if (this.getMonth(this.getReviewTime()) < o.getMonth(o.getReviewTime())) {
 				return -1;
-			} else if (this.getMonth(this.getDate()) > o.getMonth(o.getDate())) {
+			} else if (this.getMonth(this.getReviewTime()) > o.getMonth(o.getReviewTime())) {
 				return 1;
-			} else if (this.getMonth(this.getDate()) == o.getMonth(o.getDate())) {
-				if (this.getDay(this.getDate()) <= o.getDay(o.getDate())) {
+			} else if (this.getMonth(this.getReviewTime()) == o.getMonth(o.getReviewTime())) {
+				if (this.getDay(this.getReviewTime()) <= o.getDay(o.getReviewTime())) {
 					return -1;
-				} else if (this.getDay(this.getDate()) > o.getDay(o.getDate())) {
+				} else if (this.getDay(this.getReviewTime()) > o.getDay(o.getReviewTime())) {
 					return 1;
 				}
 			}

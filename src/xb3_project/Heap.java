@@ -1,4 +1,4 @@
-package sort;
+package xb3_project;
 
 public class Heap {
 	/**

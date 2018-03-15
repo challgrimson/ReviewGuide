@@ -1,6 +1,61 @@
 package xb3_project;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
+
+import com.google.gson.Gson;
+
+import xb3_project.Product;
+
 public class Merge {
+	
+	public static void main(String[] args) throws IOException {
+		
+		Product[] arr = new Product[3];
+		
+		Gson gson = new Gson();
+		BufferedReader br = null;
+		
+		br = new BufferedReader(new FileReader("data.json"));
+		String review;
+		int i = 0;
+		
+		while((review = br.readLine()) != null) {
+			Product product = gson.fromJson(review, Product.class);
+
+			if (product != null) {
+				String productID = product.getAsin();
+				String date = product.getReviewTime();
+				Double rating = product.getOverall();
+				
+				arr[i] = new Product(productID, date, rating);
+				i++;
+			}
+		}
+
+		br.close();
+		
+		System.out.println("Unsorted: \n");
+		//System.out.println(Arrays.toString(arr));
+		for(int j = 0; j<arr.length; j++) {
+			System.out.println("Review " + (j+1) + ":");
+			System.out.printf("ASIN: %s, Date: %s, Rating: %.1f\n", arr[j].getAsin(), arr[j].getMonth(arr[j].getReviewTime()), arr[j].getOverall());
+		}
+		
+		/*
+		Merge.sortMerge(arr, 3);
+		System.out.println("Sorted: \n");
+		for(int j = 0; j<arr.length; j++) {
+			System.out.println("Review " + (j+1) + ":");
+			System.out.printf("ASIN: %s, Time: %s, Rating: %.1f\n", arr[j].getAsin(), arr[j].getReviewTime(), arr[j].getOverall());
+		}
+		*/
+		
+	}
+	
+	
 	/**
 	 * bottom up iterative merge sort for Product ADT
 	 * @param x - the input array containing jobs that need to be sorted.
