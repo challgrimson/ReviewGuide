@@ -1,3 +1,6 @@
 # ReviewTracker
 
-Whatup, you're looking pretty fine today ;).
+Project team order of leadership:
+1.Christian Hallgrimson
+17.The rest
+
