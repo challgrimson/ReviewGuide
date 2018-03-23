@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Scanner;
 
 import com.google.gson.Gson;
 
@@ -12,7 +13,13 @@ import xb3_project.Product;
 public class Merge {
 	
 	public static void main(String[] args) throws IOException {
+        
+        //Get the main Product ID from the user
+        Scanner reader = new Scanner(System.in);
+        System.out.println("Enter a product ID: ");
+        String ID = reader.next();
 		
+        //change this and implement searching here
 		Product[] arr = new Product[3];
 		
 		Gson gson = new Gson();
@@ -27,8 +34,7 @@ public class Merge {
 
 			if (product != null) {
 				String productID = product.getAsin();
-				String date = product.getReviewTime();
-				Double rating = product.getOverall();
+				
 				
 				arr[i] = new Product(productID, date, rating);
 				i++;
@@ -37,6 +43,7 @@ public class Merge {
 
 		br.close();
 		
+        //Output a graph here instead of this sorted array
 		System.out.println("UNSORTED: \n");
 		//System.out.println(Arrays.toString(arr));
 		for(int j = 0; j<arr.length; j++) {
@@ -51,7 +58,15 @@ public class Merge {
 			System.out.println("Review " + (j+1) + ":");
 			System.out.printf("ASIN: %s, Time: %s, Rating: %.1f\n", arr[j].getAsin(), arr[j].getReviewTime(), arr[j].getOverall());
 		}
-		
+        
+        //Graphing algorithm starts here to check the connection betweeen the two IDs.
+        System.out.println("Enter another product ID to check the connection between the two: ");
+		String ID2 = reader.next();
+        
+        //Pranav, we need to read the two things from the second json file. Asin and also_bought array.
+        
+        
+        //Graphing algorithm here to check the connection between the two.
 		
 	}
 	
