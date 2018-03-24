@@ -1,12 +1,22 @@
 package xb3_project;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.google.gson.Gson;
+
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.ui.RefineryUtilities;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import xb3_project.Product;
 
@@ -15,12 +25,14 @@ public class Merge {
 	public static void main(String[] args) throws IOException {
         
         //Get the main Product ID from the user
-        Scanner reader = new Scanner(System.in);
+        /*Scanner reader = new Scanner(System.in);
         System.out.println("Enter a product ID: ");
-        String ID = reader.next();
+        String ID = reader.next();*/
 		
         //change this and implement searching here
-		Product[] arr = new Product[3];
+		
+		
+		ArrayList<Product> arr = new ArrayList<Product>();
 		
 		Gson gson = new Gson();
 		BufferedReader br = null;
@@ -34,39 +46,89 @@ public class Merge {
 
 			if (product != null) {
 				String productID = product.getAsin();
+				String date = product.getReviewTime();
+				double rating = product.getOverall();
 				
-				
-				arr[i] = new Product(productID, date, rating);
-				i++;
+				arr.add(new Product(productID, date, rating));
 			}
 		}
 
 		br.close();
 		
-        //Output a graph here instead of this sorted array
+		
+		//This is used to convert our arraylist to an array. This arraylist would come from the hash table
+		//in the actual code, not from the simple data.json file we used here.
+		Product[] proArr = new Product[arr.size()];
+		arr.toArray(proArr);
+		
+		System.out.println("Data.json file that has the product ratings and dates posted");
+		//These console outputs are temporary.
 		System.out.println("UNSORTED: \n");
 		//System.out.println(Arrays.toString(arr));
-		for(int j = 0; j<arr.length; j++) {
+		for(int j = 0; j<proArr.length; j++) {
 			System.out.println("Review " + (j+1) + ":");
-			System.out.printf("ASIN: %s, Date: %s, Rating: %.1f\n", arr[j].getAsin(), arr[j].getMonth(arr[j].getReviewTime()), arr[j].getOverall());
+			System.out.printf("ASIN: %s, Date: %s, Rating: %.1f\n", proArr[j].getAsin(), proArr[j].getMonth(proArr[j].getReviewTime()), proArr[j].getOverall());
 		}
 		
-		
-		Merge.sortMerge(arr, 3);
+		Merge.sortMerge(proArr, proArr.length);
 		System.out.println("\nSORTED: \n");
-		for(int j = 0; j<arr.length; j++) {
+		for(int j = 0; j<proArr.length; j++) {
 			System.out.println("Review " + (j+1) + ":");
-			System.out.printf("ASIN: %s, Time: %s, Rating: %.1f\n", arr[j].getAsin(), arr[j].getReviewTime(), arr[j].getOverall());
+			System.out.printf("ASIN: %s, Time: %s, Rating: %.1f\n", proArr[j].getAsin(), proArr[j].getReviewTime(), proArr[j].getOverall());
 		}
+		
+		//used to output the rating vs time graph
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
+		for (int j = 0; j < proArr.length; j++) {
+			dataset.addValue( proArr[j].getOverall() , "trend" , proArr[j].getReviewTime() );
+		}
+	    LineChart_AWT chart = new LineChart_AWT(
+	       "Ratings Vs Date" ,
+	       "Ratings vs Date",
+	       dataset);
+	    chart.pack( );
+	    RefineryUtilities.centerFrameOnScreen( chart );
+	    chart.setVisible( true );
         
-        //Graphing algorithm starts here to check the connection betweeen the two IDs.
-        System.out.println("Enter another product ID to check the connection between the two: ");
-		String ID2 = reader.next();
         
-        //Pranav, we need to read the two things from the second json file. Asin and also_bought array.
-        
+        //The following code outputs the asin numbers and related products on the console.
+		//Need to add this data to a hash table.
+	    System.out.println();
+	    System.out.println("Data2.json file that has the related products");
+		JSONParser jsonParser = new JSONParser();
+
+		try {
+			JSONArray jsonArray = (JSONArray) jsonParser.parse(new FileReader("data2.json"));
+			Iterator<?> iter = jsonArray.iterator();
+			while (iter.hasNext()) {
+				JSONObject jsonObject = (JSONObject) iter.next();
+				String asin = (String) jsonObject.get("asin");
+				System.out.println("Asin: " + asin);
+				JSONObject relatedObject = (JSONObject) jsonObject.get("related");
+				JSONArray related = (JSONArray) relatedObject.get("also_bought");
+				ArrayList<String> relatedList = new ArrayList<String>();
+				for (int l = 0; l < related.size(); l++) {
+					relatedList.add((String) related.get(l));
+				}
+				for (int k = 0; k < relatedList.size(); k++) {
+					System.out.println(relatedList.get(k));
+				}
+			}
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		//Graphing algorithm starts here to check the connection betweeen the two IDs.
+        /*System.out.println("Enter another product ID to check the connection between the two: ");
+		String ID2 = reader.next();*/
         
         //Graphing algorithm here to check the connection between the two.
+		//int connection = BFS.connection(ID,ID2);
 		
 	}
 	
