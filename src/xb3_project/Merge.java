@@ -5,9 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
 
 import com.google.gson.Gson;
 
@@ -25,14 +28,14 @@ public class Merge {
 	public static void main(String[] args) throws IOException {
         
         //Get the main Product ID from the user
-        /*Scanner reader = new Scanner(System.in);
+        Scanner reader = new Scanner(System.in);
         System.out.println("Enter a product ID: ");
-        String ID = reader.next();*/
+        String ID = reader.next();
 		
         //change this and implement searching here
 		
-		
-		ArrayList<Product> arr = new ArrayList<Product>();
+		Map<String, ArrayList<Product>> reviews = new HashMap<String, ArrayList<Product>>();
+		//ArrayList<Product> arr = new ArrayList<Product>();
 		
 		Gson gson = new Gson();
 		BufferedReader br = null;
@@ -49,17 +52,23 @@ public class Merge {
 				String date = product.getReviewTime();
 				double rating = product.getOverall();
 				
-				arr.add(new Product(productID, date, rating));
+				reviews.putIfAbsent(productID, new ArrayList<Product>());
+				
+				if (reviews.containsKey(productID)) {
+					reviews.get(productID).add(new Product(productID, date, rating));
+				}
+				//arr.add(new Product(productID, date, rating));
 			}
 		}
 
 		br.close();
 		
 		
+		
 		//This is used to convert our arraylist to an array. This arraylist would come from the hash table
 		//in the actual code, not from the simple data.json file we used here.
-		Product[] proArr = new Product[arr.size()];
-		arr.toArray(proArr);
+		Product[] proArr = new Product[reviews.get(ID).size()];
+		reviews.get(ID).toArray(proArr);
 		
 		System.out.println("Data.json file that has the product ratings and dates posted");
 		//These console outputs are temporary.
