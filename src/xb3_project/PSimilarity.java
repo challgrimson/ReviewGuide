@@ -45,7 +45,7 @@ public class PSimilarity {
 		if (!queue.isEmpty()) {
 			nextS = queue.remove(); // get next on the queue
 			checked.add(nextS); // add as checked
-			c += bfs(nextS, p2, G, 0); // go into next depth
+			c = bfs(nextS, p2, G, 0); // go into next depth
 			if (found == true)
 				return c + 1;
 		}
