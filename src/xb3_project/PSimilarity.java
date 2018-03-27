@@ -24,28 +24,31 @@ public class PSimilarity {
 		String nextS;  //initi
 		String s;      
 		
-		linkedBag adjPt = G.getEdges(p1);   //get all the similiar products to p1 
-		Iterator<String> adjPtsIT = adjPt.iterator();  //iterater for all the adj
-		while(adjPtsIT.hasNext()) {  //while more adj
-			s = adjPtsIT.next();    //get the adj
-			  
-			if (!isChecked(s)) {    //if not already marked  
-				
-				if (s.equals(p2)) {   //if its equal to p2 youre done, found is true and return 1 to start compounding the length
-					found = true;   
-					return 1; 		
+		linkedBag adjPt = G.getEdges(p1);   //get all the similiar products to p1
+		if (adjPt != null) {
+			Iterator<String> adjPtsIT = adjPt.iterator(); // iterater for all the adj
+			while (adjPtsIT.hasNext()) { // while more adj
+				s = adjPtsIT.next(); // get the adj
+
+				if (!isChecked(s)) { // if not already marked
+
+					if (s.equals(p2)) { // if its equal to p2 youre done, found is true and return 1 to start
+										// compounding the length
+						found = true;
+						return 1;
+					}
+
+					queue.add(s); // adds each adj to the queue for future recursions
 				}
-				
-				queue.add(s);  //adds each adj to the queue for future recursions
 			}
 		}
-		
-		nextS = queue.remove();  //get next on the queue
-		checked.add(nextS);		//add as checked
-		c += bfs(nextS,p2,G,0); //go into next depth
-		if (found == true)  
-			return c + 1;		
-		
+		if (!queue.isEmpty()) {
+			nextS = queue.remove(); // get next on the queue
+			checked.add(nextS); // add as checked
+			c += bfs(nextS, p2, G, 0); // go into next depth
+			if (found == true)
+				return c + 1;
+		}
 	return -1; //only happens if none
 	}
 	

@@ -51,7 +51,7 @@ public class linkedBag {
         }
 
         public boolean hasNext() {
-            return current != null;
+            return current != null && current.next != null;
         }
 
         // returns the next item in the iterator (and advances the iterator)

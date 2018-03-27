@@ -99,7 +99,8 @@ public class Merge {
 	    RefineryUtilities.centerFrameOnScreen( chart );
 	    chart.setVisible( true );
         
-        
+	    HashAdjGraph table = new HashAdjGraph(10);
+	    
         //The following code outputs the asin numbers and related products on the console.
 		//Need to add this data to a hash table.
 	    System.out.println();
@@ -112,16 +113,17 @@ public class Merge {
 			while (iter.hasNext()) {
 				JSONObject jsonObject = (JSONObject) iter.next();
 				String asin = (String) jsonObject.get("asin");
-				System.out.println("Asin: " + asin);
+				//System.out.println("Asin: " + asin);
 				JSONObject relatedObject = (JSONObject) jsonObject.get("related");
 				JSONArray related = (JSONArray) relatedObject.get("also_bought");
-				ArrayList<String> relatedList = new ArrayList<String>();
+				linkedBag adjBAG = new linkedBag();
 				for (int l = 0; l < related.size(); l++) {
-					relatedList.add((String) related.get(l));
+					adjBAG.add((String) related.get(l));
 				}
-				for (int k = 0; k < relatedList.size(); k++) {
-					System.out.println(relatedList.get(k));
-				}
+				table.addBag(asin, adjBAG);
+				/*for (int k = 0; k < adjBAG.size(); k++) {
+					System.out.println(adjBAG.);
+				}*/
 			}
 			
 		} catch (FileNotFoundException e) {
@@ -132,9 +134,14 @@ public class Merge {
 			e.printStackTrace();
 		}
 		
+		System.out.println("Enter a new product ID: ");
+		String ID2 = reader.next();
+		
 		//Graphing algorithm starts here to check the connection betweeen the two IDs.
-        /*System.out.println("Enter another product ID to check the connection between the two: ");
-		String ID2 = reader.next();*/
+        System.out.println("Enter another product ID to check the connection between the two: ");
+		String ID3 = reader.next();
+		
+		System.out.println(PSimilarity.Similarity(ID2, ID3, table));
         
         //Graphing algorithm here to check the connection between the two.
 		//int connection = BFS.connection(ID,ID2);
