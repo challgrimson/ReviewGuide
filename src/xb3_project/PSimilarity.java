@@ -37,14 +37,13 @@ public class PSimilarity {
 						found = true;
 						return 1;
 					}
-
+					checked.add(s); //viewed and placed on queue, so dont want to doubleup
 					queue.add(s); // adds each adj to the queue for future recursions
 				}
 			}
 		}
 		if (!queue.isEmpty()) {
 			nextS = queue.remove(); // get next on the queue
-			checked.add(nextS); // add as checked
 			c = bfs(nextS, p2, G, 0); // go into next depth
 			if (found == true)
 				return c + 1;
