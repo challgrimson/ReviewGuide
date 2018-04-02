@@ -61,7 +61,7 @@ public class Product implements Comparable<Product>{
 	public int getMonth(String data) {
 		String[] s2 = data.split(",");
 		String[] s3 = s2[0].split(" ");
-		return Integer.parseInt(s3[1]);
+		return Integer.parseInt(s3[0]);
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class Product implements Comparable<Product>{
 	public int getDay(String data) {
 		String[] s4 = data.split(",");
 		String[] s5 = s4[0].split(" ");
-		return Integer.parseInt(s5[0]);
+		return Integer.parseInt(s5[1]);
 	}
 	
 	/**

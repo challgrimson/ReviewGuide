@@ -79,7 +79,7 @@ public class Merge {
 			System.out.printf("ASIN: %s, Date: %s, Rating: %.1f\n", proArr[j].getAsin(), proArr[j].getMonth(proArr[j].getReviewTime()), proArr[j].getOverall());
 		}
 		
-		Merge.sortMerge(proArr, proArr.length);
+		Heap.sortHeap(proArr, proArr.length);
 		System.out.println("\nSORTED: \n");
 		for(int j = 0; j<proArr.length; j++) {
 			System.out.println("Review " + (j+1) + ":");
