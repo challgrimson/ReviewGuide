@@ -14,8 +14,15 @@ public class PSimilarity {
 		bfs(p1,p2,G);  //start
 		
 		int count = 0;
-		for (String i = p2; !i.equals(p1); i = parent.get(i)) 
-			count+=1;
+		
+		try {
+			for (String i = p2; !i.equals(p1); i = parent.get(i)) {
+				count+=1;
+			}
+		} catch (NullPointerException e) {
+			System.out.println("Not related");
+			System.exit(0);
+		}
 		return  quantify(count);
 	}
 	
