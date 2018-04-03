@@ -20,8 +20,8 @@
                   <Font name="Helvetica" size="25.0" />
                </font>
             </Label>
-            <TextField layoutX="66.0" layoutY="195.0" prefHeight="27.0" prefWidth="172.0" />
-            <Button layoutX="120.0" layoutY="263.0" mnemonicParsing="false" text="Submit" />
+            <TextField fx:id = "firstID" layoutX="66.0" layoutY="195.0" prefHeight="27.0" prefWidth="172.0" />
+            <Button layoutX="120.0" layoutY="263.0" mnemonicParsing="false" onAction="#productTrend" text="Submit" />
             <Label layoutX="108.0" layoutY="145.0" text="Enter ASIN ID" />
             <Separator layoutX="289.0" layoutY="73.0" orientation="VERTICAL" prefHeight="310.0" prefWidth="15.0" />
             <Label layoutX="60.0" layoutY="78.0" text="Check Product Trend">
@@ -35,11 +35,11 @@
                </font>
             </Label>
             <Label layoutX="343.0" layoutY="147.0" text="Enter First ASIN ID" />
-            <TextField layoutX="504.0" layoutY="142.0" prefHeight="27.0" prefWidth="172.0" />
-            <TextField layoutX="503.0" layoutY="189.0" prefHeight="27.0" prefWidth="172.0" />
+            <TextField fx:id = "secondID" layoutX="504.0" layoutY="142.0" prefHeight="27.0" prefWidth="172.0" />
+            <TextField fx:id = "thirdID" layoutX="503.0" layoutY="189.0" prefHeight="27.0" prefWidth="172.0" />
             <Label layoutX="344.0" layoutY="193.0" prefHeight="17.0" prefWidth="139.0" text="Enter Second ASIN ID" />
-            <Button layoutX="415.0" layoutY="248.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="177.0" text="Submit" />
-            <TextArea layoutX="408.0" layoutY="319.0" prefHeight="42.0" prefWidth="270.0" />
+            <Button layoutX="415.0" layoutY="248.0" mnemonicParsing="false" onAction="#relatedProduct" prefHeight="27.0" prefWidth="177.0" text="Submit" />
+            <TextArea fx:id = "result" layoutX="408.0" layoutY="319.0" prefHeight="42.0" prefWidth="270.0" />
             <Label layoutX="347.0" layoutY="331.0" prefHeight="17.0" prefWidth="64.0" text="Result" />
          </children>
       </AnchorPane>

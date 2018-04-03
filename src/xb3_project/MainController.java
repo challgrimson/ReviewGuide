@@ -4,10 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -19,7 +21,25 @@ import org.json.simple.parser.ParseException;
 
 import com.google.gson.Gson;
 
-public class MainController {
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
+
+public class MainController implements Initializable {
+	
+	@FXML
+	private TextField firstID;
+	
+	@FXML
+	private TextField secondID;
+	
+	@FXML
+	private TextField thirdID;
+	
+	@FXML
+	private TextArea result;
 	
 	
 	public static void main(String[] args) throws IOException {
@@ -147,16 +167,19 @@ public class MainController {
 		
 	}
 	
-	public static void productTrend() throws IOException {
+	@FXML
+	public void productTrend(ActionEvent event) throws IOException {
         
 		//0528881469
 		//0000031852
 		//B01D23RC6W
 		
         //Get the main Product ID from the user
-        Scanner reader = new Scanner(System.in);
-        System.out.println("Enter a product ID: ");
-        String ID = reader.next();
+        //Scanner reader = new Scanner(System.in);
+        //System.out.println("Enter a product ID: ");
+        //String ID = reader.next();
+		
+		String ID = firstID.getText();
 		
         //change this and implement searching here
 		
@@ -194,21 +217,21 @@ public class MainController {
 		Product[] proArr = new Product[reviews.get(ID).size()];
 		reviews.get(ID).toArray(proArr);
 		
-		System.out.println("Data.json file that has the product ratings and dates posted");
+		//System.out.println("Data.json file that has the product ratings and dates posted");
 		//These console outputs are temporary.
-		System.out.println("UNSORTED: \n");
+		//System.out.println("UNSORTED: \n");
 		//System.out.println(Arrays.toString(arr));
-		for(int j = 0; j<proArr.length; j++) {
+		/*for(int j = 0; j<proArr.length; j++) {
 			System.out.println("Review " + (j+1) + ":");
 			System.out.printf("ASIN: %s, Date: %s, Rating: %.1f\n", proArr[j].getAsin(), proArr[j].getMonth(proArr[j].getReviewTime()), proArr[j].getOverall());
-		}
+		}*/
 		
 		Heap.sortHeap(proArr, proArr.length);
-		System.out.println("\nSORTED: \n");
-		for(int j = 0; j<proArr.length; j++) {
+		//System.out.println("\nSORTED: \n");
+		/*for(int j = 0; j<proArr.length; j++) {
 			System.out.println("Review " + (j+1) + ":");
 			System.out.printf("ASIN: %s, Time: %s, Rating: %.1f\n", proArr[j].getAsin(), proArr[j].getReviewTime(), proArr[j].getOverall());
-		}
+		}*/
 		
 		//used to output the rating vs time graph
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
@@ -224,15 +247,16 @@ public class MainController {
 	    chart.setVisible( true );
 	}
 	
-	public static void relatedProduct() {
-        Scanner reader = new Scanner(System.in);
+	@FXML
+	public void relatedProduct(ActionEvent event) {
+        //Scanner reader = new Scanner(System.in);
 		
 	    HashAdjGraph table = new HashAdjGraph(10);
 	    
         //The following code outputs the asin numbers and related products on the console.
 		//Need to add this data to a hash table.
-	    System.out.println();
-	    System.out.println("Data2.json file that has the related products");
+	    //System.out.println();
+	    //System.out.println("Data2.json file that has the related products");
 		JSONParser jsonParser = new JSONParser();
 
 		try {
@@ -262,17 +286,28 @@ public class MainController {
 			e.printStackTrace();
 		}
 		
-		System.out.println("Enter a new product ID: ");
-		String ID2 = reader.next();
+		//System.out.println("Enter a new product ID: ");
+		//String ID2 = reader.next();
+		
+		String ID2 = secondID.getText();
 		
 		//Graphing algorithm starts here to check the connection betweeen the two IDs.
-        System.out.println("Enter another product ID to check the connection between the two: ");
-		String ID3 = reader.next();
+        //System.out.println("Enter another product ID to check the connection between the two: ");
+		//String ID3 = reader.next();
 		
-		System.out.println(PSimilarity.Similarity(ID2, ID3, table));
+		String ID3 = thirdID.getText();
+		
+		//System.out.println(PSimilarity.Similarity(ID2, ID3, table));
+		result.setText(PSimilarity.Similarity(ID2, ID3, table));
         
         //Graphing algorithm here to check the connection between the two.
 		//int connection = BFS.connection(ID,ID2);
+	}
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
