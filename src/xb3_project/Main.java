@@ -6,7 +6,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.fxml.FXMLLoader;
 
-
+/**
+ * 
+ * Main function for the application
+ * Loads the gui
+ *
+ */
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {

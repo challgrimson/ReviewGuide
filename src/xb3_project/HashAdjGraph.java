@@ -1,7 +1,4 @@
 package xb3_project;
-
-import java.util.Iterator;
-
 //christian
 //same idea as adjancy list, but uses a hashtable to hold them in a linked bag
 
@@ -12,6 +9,10 @@ import java.util.Iterator;
 // - You can either create a linkedBag (class in repo) and add all the similiar products first then use addBag(key,Bag) --FASTER--
 // - or using addEdge(key,productname) you can dynamically add to the product adj bag as you process the json --SLOWER--
 
+
+/**
+ *A hashtable implementation that that uses a string as the key and contains the keys edges in a bag
+ */
 public class HashAdjGraph {
 
     private int size = 0;           // number of key-value pairs in the symbol table
@@ -19,40 +20,46 @@ public class HashAdjGraph {
     private String[] keys;      // the keys
     private linkedBag[] adjBag;    // the bags stored at each key
 
-    public static void main(String[] args) {
-    	HashAdjGraph tableTEST = new HashAdjGraph(10);
-    	tableTEST.addEdge("1","product1");
-    	tableTEST.addEdge("5","product1sdfhkjs");
-    	tableTEST.addEdge("1","product3");
-    	linkedBag adjBAG = tableTEST.getEdges("5");
-    	Iterator<String> adjPtsIT = adjBAG.iterator();
-    	System.out.println(adjPtsIT.next());
-    	//System.out.println(adjPtsIT.next());
-    }
-
-    //inti table to given capacity
+    /**
+     * Constructor for the table, initializes empty values of given size
+     * @param V initial size of table
+     */
     public HashAdjGraph(int V) {
     	tableSize = V;
         keys = new String[tableSize];
         adjBag = new linkedBag[tableSize];
     }
 
-    //return size
+    /**
+     * Accessor for current table size
+     * @return
+     */
     public int size() {
         return size;
     }
 
-    //obv
+    /**
+     * returns if a given key contains a vertex
+     * @param key The key to check
+     * @return a boolean of true if there is a vertex, false otherwise
+     */
     public boolean containsVertex(String key) {
         return getEdges(key) != null;
     }
 
-    //obv
+    /**
+     * Hash function used to hash the keys
+     * @param key The key to hash
+     * @return The has of the key
+     * hash function used from Algorithms, 4th Edition by Robert Sedgewick and Kevin Wayne
+     */
     private int hash(String key) {
         return (key.hashCode() & 0x7fffffff) % tableSize;
     }
 
-    //obv
+    /**
+     * resizes the table by a factor of 2 and replaces all the original elements
+     */
     private void resize() {
     	int sizeFactor = 2;
     	
@@ -68,7 +75,12 @@ public class HashAdjGraph {
         tableSize  = tempTable.tableSize;
     }
     
-    //Used if you don't want to just put a value in the bag, but an entire bag
+    /**
+     * Sets an  entire adjacency bag to be associated with the key
+     * @param key The key that the bags has the vertices of
+     * @param bag Contains vertices of the key
+     * Should only be done for a key of an empty bag, or to overwrite a keys current information
+     */
     public void addBag(String key, linkedBag bag) {
         int i;
         for (i = hash(key); keys[i] != null; i = (i + 1) % tableSize) {
@@ -82,7 +94,11 @@ public class HashAdjGraph {
         size++;
     }
 
-    //place product in corresponding keys bag
+    /**
+     * Place a new edge for the key
+     * @param key The key that the edge is attached to
+     * @param product The vertex of the key
+     */
     public void addEdge(String key, String product) {
 
         // double table size if 50% full
@@ -102,7 +118,12 @@ public class HashAdjGraph {
         size++;
     }
 
-    //returns the **entire bag**
+    /**
+     * returns the bag containing all adj edges
+     * use the bag iterator to go through each idem
+     * @param key The string of the bag
+     * @return The linked bag containing the keys adj edges
+     */
     public linkedBag getEdges(String key) {
         for (int i = hash(key); keys[i] != null; i = (i + 1) % size)
             if (keys[i].equals(key))

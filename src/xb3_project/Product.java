@@ -1,7 +1,5 @@
 package xb3_project;
 
-import java.util.List;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -111,21 +109,22 @@ public class Product implements Comparable<Product>{
 	   */
 	@Override
 	public int compareTo(Product o) {
-		if (this.getYear(this.getReviewTime()) < o.getYear(o.getReviewTime())) return -1;
-		if (this.getYear(this.getReviewTime()) > o.getYear(o.getReviewTime())) return 1;
+		if (this.getYear(this.getReviewTime()) < o.getYear(o.getReviewTime())) {System.out.println("here1");return -1;}
+		if (this.getYear(this.getReviewTime()) > o.getYear(o.getReviewTime())) {System.out.println("here2");return 1;}
 		if (this.getYear(this.getReviewTime()) == o.getYear(this.getReviewTime())) {
 			if (this.getMonth(this.getReviewTime()) < o.getMonth(o.getReviewTime())) {
 				return -1;
 			} else if (this.getMonth(this.getReviewTime()) > o.getMonth(o.getReviewTime())) {
 				return 1;
 			} else if (this.getMonth(this.getReviewTime()) == o.getMonth(o.getReviewTime())) {
-				if (this.getDay(this.getReviewTime()) <= o.getDay(o.getReviewTime())) {
+				if (this.getDay(this.getReviewTime()) < o.getDay(o.getReviewTime())) {
 					return -1;
 				} else if (this.getDay(this.getReviewTime()) > o.getDay(o.getReviewTime())) {
 					return 1;
 				}
 			}
 		}
+		System.out.println("here2---");
 		return 0;
 	}
 	

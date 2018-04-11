@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RefineryUtilities;
@@ -41,132 +40,12 @@ public class MainController implements Initializable {
 	@FXML
 	private TextArea result;
 	
-	
-	public static void main(String[] args) throws IOException {
-        
-		//0528881469
-		//0000031852
-		//B01D23RC6W
-		
-        //Get the main Product ID from the user
-        Scanner reader = new Scanner(System.in);
-        System.out.println("Enter a product ID: ");
-        String ID = reader.next();
-		
-        //change this and implement searching here
-		
-		Map<String, ArrayList<Product>> reviews = new HashMap<String, ArrayList<Product>>();
-		//ArrayList<Product> arr = new ArrayList<Product>();
-		
-		Gson gson = new Gson();
-		BufferedReader br = null;
-		
-		br = new BufferedReader(new FileReader("data.json"));
-		String review;
-		int i = 0;
-		
-		while((review = br.readLine()) != null) {
-			Product product = gson.fromJson(review, Product.class);
-
-			if (product != null) {
-				String productID = product.getAsin();
-				String date = product.getReviewTime();
-				double rating = product.getOverall();
-				
-				reviews.putIfAbsent(productID, new ArrayList<Product>());
-				
-				if (reviews.containsKey(productID)) {
-					reviews.get(productID).add(new Product(productID, date, rating));
-				}
-				//arr.add(new Product(productID, date, rating));
-			}
-		}
-
-		br.close();
-		
-		//This is used to convert our arraylist to an array. This arraylist would come from the hash table
-		//in the actual code, not from the simple data.json file we used here.
-		Product[] proArr = new Product[reviews.get(ID).size()];
-		reviews.get(ID).toArray(proArr);
-		
-		System.out.println("Data.json file that has the product ratings and dates posted");
-		//These console outputs are temporary.
-		System.out.println("UNSORTED: \n");
-		//System.out.println(Arrays.toString(arr));
-		for(int j = 0; j<proArr.length; j++) {
-			System.out.println("Review " + (j+1) + ":");
-			System.out.printf("ASIN: %s, Date: %s, Rating: %.1f\n", proArr[j].getAsin(), proArr[j].getMonth(proArr[j].getReviewTime()), proArr[j].getOverall());
-		}
-		
-		Heap.sortHeap(proArr, proArr.length);
-		System.out.println("\nSORTED: \n");
-		for(int j = 0; j<proArr.length; j++) {
-			System.out.println("Review " + (j+1) + ":");
-			System.out.printf("ASIN: %s, Time: %s, Rating: %.1f\n", proArr[j].getAsin(), proArr[j].getReviewTime(), proArr[j].getOverall());
-		}
-		
-		//used to output the rating vs time graph
-		DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
-		for (int j = 0; j < proArr.length; j++) {
-			dataset.addValue( proArr[j].getOverall() , "trend" , proArr[j].getReviewTime() );
-		}
-	    LineChart_AWT chart = new LineChart_AWT(
-	       "Ratings Vs Date" ,
-	       "Ratings vs Date",
-	       dataset);
-	    chart.pack( );
-	    RefineryUtilities.centerFrameOnScreen( chart );
-	    chart.setVisible( true );
-	    
-	    HashAdjGraph table = new HashAdjGraph(10);
-	    
-        //The following code outputs the asin numbers and related products on the console.
-		//Need to add this data to a hash table.
-	    System.out.println();
-	    System.out.println("Data2.json file that has the related products");
-		JSONParser jsonParser = new JSONParser();
-
-		try {
-			JSONArray jsonArray = (JSONArray) jsonParser.parse(new FileReader("data2.json"));
-			Iterator<?> iter = jsonArray.iterator();
-			while (iter.hasNext()) {
-				JSONObject jsonObject = (JSONObject) iter.next();
-				String asin = (String) jsonObject.get("asin");
-				//System.out.println("Asin: " + asin);
-				JSONObject relatedObject = (JSONObject) jsonObject.get("related");
-				JSONArray related = (JSONArray) relatedObject.get("also_bought");
-				linkedBag adjBAG = new linkedBag();
-				for (int l = 0; l < related.size(); l++) {
-					adjBAG.add((String) related.get(l));
-				}
-				table.addBag(asin, adjBAG);
-				/*for (int k = 0; k < adjBAG.size(); k++) {
-					System.out.println(adjBAG.);
-				}*/
-			}
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		System.out.println("Enter a new product ID: ");
-		String ID2 = reader.next();
-		
-		//Graphing algorithm starts here to check the connection betweeen the two IDs.
-        System.out.println("Enter another product ID to check the connection between the two: ");
-		String ID3 = reader.next();
-		
-		System.out.println(PSimilarity.Similarity(ID2, ID3, table));
-        
-        //Graphing algorithm here to check the connection between the two.
-		//int connection = BFS.connection(ID,ID2);
-		
-	}
-	
+	/**
+	 * Parses the data and using the given string in the ui it obtains its reviews 
+	 * then it sorts the reviews and makes a line graph for output
+	 * @param event response to button click in gui
+	 * @throws IOException
+	 */
 	@FXML
 	public void productTrend(ActionEvent event) throws IOException {
         
@@ -175,14 +54,61 @@ public class MainController implements Initializable {
 		//B01D23RC6W
 		
         //Get the main Product ID from the user
-        //Scanner reader = new Scanner(System.in);
-        //System.out.println("Enter a product ID: ");
-        //String ID = reader.next();
-		
 		String ID = firstID.getText();
 		
-        //change this and implement searching here
+		Map<String, ArrayList<Product>> reviews = new HashMap<String, ArrayList<Product>>();
 		
+		reviews = trendDataParse();  //parses through the data
+		
+		//This is used to convert our arraylist to an array. This arraylist would come from the hash table
+		Product[] proArr = new Product[reviews.get(ID).size()];
+		reviews.get(ID).toArray(proArr);
+		
+		Heap.sortHeap(proArr, proArr.length);
+		
+		
+		//used to output the rating vs time graph
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
+		for (int j = 0; j < proArr.length; j++) {
+			dataset.addValue( proArr[j].getOverall() , "trend" , proArr[j].getReviewTime() );
+		}
+	    LineChart_AWT chart = new LineChart_AWT(
+	       "Ratings Vs Date" ,
+	       "Ratings vs Date",
+	       dataset);
+	    chart.pack( );
+	    RefineryUtilities.centerFrameOnScreen( chart );
+	    chart.setVisible( true );
+	}
+	
+	/**
+	 * Given two product ids in the gui, gives a relation between the two based on how close they are in frequently 
+	 * bought products
+	 * @param event response to button click in gui
+	 */
+	@FXML
+	public void relatedProduct(ActionEvent event) {
+		
+	    HashAdjGraph table = new HashAdjGraph(10);
+		table = similarityDataParse();
+		String ID2 = secondID.getText();
+		String ID3 = thirdID.getText();
+		
+		result.setText(PSimilarity.Similarity(ID2, ID3, table));
+	}
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/**
+	 * parses the data for use in the trend module, stores it in a Map<String, ArrayList<Product>>
+	 * @return returns the hashMap of the product id as the key, and its reviews as the data in a ArrayList
+	 * @throws IOException
+	 */
+	public static Map<String, ArrayList<Product>> trendDataParse() throws IOException {
 		Map<String, ArrayList<Product>> reviews = new HashMap<String, ArrayList<Product>>();
 		//ArrayList<Product> arr = new ArrayList<Product>();
 		
@@ -191,7 +117,6 @@ public class MainController implements Initializable {
 		
 		br = new BufferedReader(new FileReader("data.json"));
 		String review;
-		int i = 0;
 		
 		while((review = br.readLine()) != null) {
 			Product product = gson.fromJson(review, Product.class);
@@ -212,51 +137,18 @@ public class MainController implements Initializable {
 
 		br.close();
 		
-		//This is used to convert our arraylist to an array. This arraylist would come from the hash table
-		//in the actual code, not from the simple data.json file we used here.
-		Product[] proArr = new Product[reviews.get(ID).size()];
-		reviews.get(ID).toArray(proArr);
-		
-		//System.out.println("Data.json file that has the product ratings and dates posted");
-		//These console outputs are temporary.
-		//System.out.println("UNSORTED: \n");
-		//System.out.println(Arrays.toString(arr));
-		/*for(int j = 0; j<proArr.length; j++) {
-			System.out.println("Review " + (j+1) + ":");
-			System.out.printf("ASIN: %s, Date: %s, Rating: %.1f\n", proArr[j].getAsin(), proArr[j].getMonth(proArr[j].getReviewTime()), proArr[j].getOverall());
-		}*/
-		
-		Heap.sortHeap(proArr, proArr.length);
-		//System.out.println("\nSORTED: \n");
-		/*for(int j = 0; j<proArr.length; j++) {
-			System.out.println("Review " + (j+1) + ":");
-			System.out.printf("ASIN: %s, Time: %s, Rating: %.1f\n", proArr[j].getAsin(), proArr[j].getReviewTime(), proArr[j].getOverall());
-		}*/
-		
-		//used to output the rating vs time graph
-		DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
-		for (int j = 0; j < proArr.length; j++) {
-			dataset.addValue( proArr[j].getOverall() , "trend" , proArr[j].getReviewTime() );
-		}
-	    LineChart_AWT chart = new LineChart_AWT(
-	       "Ratings Vs Date" ,
-	       "Ratings vs Date",
-	       dataset);
-	    chart.pack( );
-	    RefineryUtilities.centerFrameOnScreen( chart );
-	    chart.setVisible( true );
+		return reviews;
 	}
 	
-	@FXML
-	public void relatedProduct(ActionEvent event) {
-        //Scanner reader = new Scanner(System.in);
-		
+	/**
+	 * parses the data for use in the similarity module, stores the data in a HashAdjGraph
+	 * uses a json parser to obtain the data 
+	 * @return a table of the information. The table contains the product as key, and the adj products as the value as a linkedBag
+	 */
+	public static HashAdjGraph similarityDataParse() {
 	    HashAdjGraph table = new HashAdjGraph(10);
 	    
         //The following code outputs the asin numbers and related products on the console.
-		//Need to add this data to a hash table.
-	    //System.out.println();
-	    //System.out.println("Data2.json file that has the related products");
 		JSONParser jsonParser = new JSONParser();
 
 		try {
@@ -273,9 +165,6 @@ public class MainController implements Initializable {
 					adjBAG.add((String) related.get(l));
 				}
 				table.addBag(asin, adjBAG);
-				/*for (int k = 0; k < adjBAG.size(); k++) {
-					System.out.println(adjBAG.);
-				}*/
 			}
 			
 		} catch (FileNotFoundException e) {
@@ -286,28 +175,9 @@ public class MainController implements Initializable {
 			e.printStackTrace();
 		}
 		
-		//System.out.println("Enter a new product ID: ");
-		//String ID2 = reader.next();
-		
-		String ID2 = secondID.getText();
-		
-		//Graphing algorithm starts here to check the connection betweeen the two IDs.
-        //System.out.println("Enter another product ID to check the connection between the two: ");
-		//String ID3 = reader.next();
-		
-		String ID3 = thirdID.getText();
-		
-		//System.out.println(PSimilarity.Similarity(ID2, ID3, table));
-		result.setText(PSimilarity.Similarity(ID2, ID3, table));
-        
-        //Graphing algorithm here to check the connection between the two.
-		//int connection = BFS.connection(ID,ID2);
-	}
-
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
+		return table;
 		
 	}
+	
 	
 }
