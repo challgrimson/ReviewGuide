@@ -1,5 +1,5 @@
 package xb3_project;
-//christian
+
 //same idea as adjancy list, but uses a hashtable to hold them in a linked bag
 
 
@@ -120,7 +120,7 @@ public class HashAdjGraph {
 
     /**
      * returns the bag containing all adj edges
-     * use the bag iterator to go through each idem
+     * use the bag iterator to go through each item
      * @param key The string of the bag
      * @return The linked bag containing the keys adj edges
      */

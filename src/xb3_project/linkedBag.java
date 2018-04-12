@@ -3,7 +3,7 @@ package xb3_project;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-//christian
+
 //accessing the items in the array is done through the iterator class at the bottom
 
 /**
@@ -25,7 +25,7 @@ public class linkedBag {
     }
 
     /**
-     * intializes the bag
+     * Initializes the bag
      */
     public linkedBag() {
         first = null;

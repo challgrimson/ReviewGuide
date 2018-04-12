@@ -61,10 +61,6 @@ public class MainController implements Initializable {
 	
 	@FXML
 	public void productTrend(ActionEvent event) throws IOException {
-        
-		//0528881469
-		//0000031852
-		//B01D23RC6W
 		
         //Get the main Product ID from the user
 		String ID = firstID.getText();
@@ -123,7 +119,6 @@ public class MainController implements Initializable {
 	 */
 	public static Map<String, ArrayList<Product>> trendDataParse() throws IOException {
 		Map<String, ArrayList<Product>> reviews = new HashMap<String, ArrayList<Product>>();
-		//ArrayList<Product> arr = new ArrayList<Product>();
 		
 		Gson gson = new Gson();
 		BufferedReader br = null;
@@ -144,7 +139,6 @@ public class MainController implements Initializable {
 				if (reviews.containsKey(productID)) {
 					reviews.get(productID).add(new Product(productID, date, rating));
 				}
-				//arr.add(new Product(productID, date, rating));
 			}
 		}
 
@@ -170,7 +164,6 @@ public class MainController implements Initializable {
 			while (iter.hasNext()) {
 				JSONObject jsonObject = (JSONObject) iter.next();
 				String asin = (String) jsonObject.get("asin");
-				//System.out.println("Asin: " + asin);
 				JSONObject relatedObject = (JSONObject) jsonObject.get("related");
 				JSONArray related = (JSONArray) relatedObject.get("also_bought");
 				linkedBag adjBAG = new linkedBag();

@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
-//christiano
+
 //Will return the shortest distance between p1 and p2 in the undirected equal weight graph G
 /**
  * 
@@ -23,7 +23,7 @@ public class PSimilarity {
 	public static String Similarity(String p1, String p2, HashAdjGraph G) {
 		bfs(p1,p2,G);  //start
 		
-		int count = 0; //yused to count the depth
+		int count = 0; //used to count the depth
 		
 		try { //finds the depth by parents back to p1
 			for (String i = p2; !i.equals(p1); i = parent.get(i)) {
@@ -37,7 +37,7 @@ public class PSimilarity {
 	/**
 	 * Given a value, give that value a meaning
 	 * @param val The value to quantify
-	 * @return a string refering to how related the items were, by how far away they took to get to
+	 * @return a string referring to how related the items were, by how far away they took to get to
 	 */
 	private static String quantify(int val) {
 		if (0<= val && val < 5) {
@@ -56,7 +56,7 @@ public class PSimilarity {
 	 * A basic bfs that includes a table to record the parents
 	 * @param p1 The starting string
 	 * @param p2 The ending string
-	 * @param G The table fo the edges
+	 * @param G The table for the edges
 	 */
 	private static void bfs(String p1, String p2, HashAdjGraph G) {
 		linkedBag checked = new linkedBag();

@@ -24,7 +24,7 @@ public class Heap {
 	 * @param n - the size of the input array
 	 */
 	
-	//Code largly inspired from Algorithms, 4th Edition by Robert Sedgewick and Kevin Wayne
+	//Code largely inspired from Algorithms, 4th Edition by Robert Sedgewick and Kevin Wayne
     private static void sink(Product[] x, int k, int n) {
         while (2*k <= n) {
             int j = 2*k;
