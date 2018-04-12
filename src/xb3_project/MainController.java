@@ -46,6 +46,19 @@ public class MainController implements Initializable {
 	 * @param event response to button click in gui
 	 * @throws IOException
 	 */
+	
+	/**
+	 * An open source gson library was used for the parsing of the gson data "gson-2.8.2.jar"
+	 * https://github.com/google/gson
+	 */
+	
+	/**
+	 * Also an open source json library was used for easy and quick parsing of the json data "json-simple-1.1.jar"
+	 * https://github.com/fangyidong/json-simple
+	 * https://code.google.com/archive/p/json-simple/
+	 * by Yidong Fang
+	 */
+	
 	@FXML
 	public void productTrend(ActionEvent event) throws IOException {
         
@@ -72,7 +85,7 @@ public class MainController implements Initializable {
 		for (int j = 0; j < proArr.length; j++) {
 			dataset.addValue( proArr[j].getOverall() , "trend" , proArr[j].getReviewTime() );
 		}
-	    LineChart_AWT chart = new LineChart_AWT(
+	    LineChart chart = new LineChart(
 	       "Ratings Vs Date" ,
 	       "Ratings vs Date",
 	       dataset);

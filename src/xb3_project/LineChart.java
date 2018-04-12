@@ -9,16 +9,19 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  * Creates a line chart of given values for view
- */ //
+ * The creation of the line graph is through the use of an external library "jfreechart-1.0.1.jar" and another library it used "jcommon-1.0.0.jar"
+ * http://www.jfree.org/jfreechart/
+ * http://www.jfree.org/jcommon/
+ */
 @SuppressWarnings("serial") //no intention of serializing class
-public class LineChart_AWT extends ApplicationFrame {
+public class LineChart extends ApplicationFrame {
 	/**
 	 * Puts together a line chart based on desired values
 	 * @param applicationTitle  The title of the application
 	 * @param chartTitle The charts title
 	 * @param dataset   The data for the chart of type DefaultCategoryDataset
 	 */
-	   public LineChart_AWT( String applicationTitle , String chartTitle, DefaultCategoryDataset dataset) {
+	   public LineChart( String applicationTitle , String chartTitle, DefaultCategoryDataset dataset) {
 	      super(applicationTitle);
 	      JFreeChart lineChart = ChartFactory.createLineChart(
 	         chartTitle,

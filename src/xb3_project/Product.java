@@ -109,8 +109,8 @@ public class Product implements Comparable<Product>{
 	   */
 	@Override
 	public int compareTo(Product o) {
-		if (this.getYear(this.getReviewTime()) < o.getYear(o.getReviewTime())) {System.out.println("here1");return -1;}
-		if (this.getYear(this.getReviewTime()) > o.getYear(o.getReviewTime())) {System.out.println("here2");return 1;}
+		if (this.getYear(this.getReviewTime()) < o.getYear(o.getReviewTime())) {return -1;}
+		if (this.getYear(this.getReviewTime()) > o.getYear(o.getReviewTime())) {return 1;}
 		if (this.getYear(this.getReviewTime()) == o.getYear(this.getReviewTime())) {
 			if (this.getMonth(this.getReviewTime()) < o.getMonth(o.getReviewTime())) {
 				return -1;
@@ -124,7 +124,6 @@ public class Product implements Comparable<Product>{
 				}
 			}
 		}
-		System.out.println("here2---");
 		return 0;
 	}
 	
